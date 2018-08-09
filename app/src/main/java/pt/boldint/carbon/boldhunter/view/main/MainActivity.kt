@@ -37,13 +37,14 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     data class MainActivityViewState(
             var loadingPages: Boolean = false,
             var currentPage: Int = 0,
+            var itemPerPage :Int= 50,
             var listPosition :Int = 0,
             var showAll: Boolean = false,
             var sort_by : SortBy = SortBy.created_at,
             var order_by : OrderBy = OrderBy.desc,
             var allPosts :Boolean = false,
             var date : Calendar = Calendar.getInstance()
-            ) : Parcelable
+    ) : Parcelable
 
     @Inject
     override lateinit var presenter: MainPresenter
@@ -73,7 +74,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         viewState.listPosition = (recycler_view.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
-            outState.putParcelable(VIEW_STATE_ID, viewState)
+        outState.putParcelable(VIEW_STATE_ID, viewState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -124,24 +125,25 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
                 }
             })
         }
-
-        //recycler_view.scrollToPosition(viewState.listPosition) //TODO FIX, Has to be done after fetching pages
     }
 
     override fun showPosts(posts: List<Post>) {
         Log.v(localClassName, "showing ${posts.size} posts")
-        showTitle()
-        postRecyclerViewAdapter.addItems(posts)
+        if(postRecyclerViewAdapter.itemCount==0){
+            showTitle()
+            postRecyclerViewAdapter.addItems(posts)
+            recycler_view.scrollToPosition(viewState.listPosition)
+        }else postRecyclerViewAdapter.addItems(posts)
     }
 
     private fun fetchPosts(keepCurrent: Boolean = false) {
         if(!keepCurrent) postRecyclerViewAdapter.clear()
 
-        val loadedPages = postRecyclerViewAdapter.itemCount / 10
+        val loadedPages = postRecyclerViewAdapter.itemCount / viewState.itemPerPage
         presenter.setPosts(
                 loadedPages,
                 viewState.currentPage++,
-                10,
+                viewState.itemPerPage,
                 order = viewState.order_by,
                 sort_by = viewState.sort_by,
                 day= if (viewState.allPosts) null else viewState.date.getDay(),

@@ -134,11 +134,10 @@ class PostDetailsActivity : BaseActivity<PostDetailsPresenter, PostDetailsView>(
                         .placeholder(R.drawable.loading)
                         .error(R.drawable.ic_broken_image_black_24dp)
                         .into(thumbnail)
-
                 user_info.setOnClickListener {_->
                     startActivity(
                             Intent(this@PostDetailsActivity, PostDetailsActivity::class.java)
-                                    .run { putExtra(EXTRA_POST_ID, it.id) }
+                                    .run { putExtra(EXTRA_POST_ID, it.user.id) }
                     )
                 }
 
@@ -172,8 +171,8 @@ class PostDetailsActivity : BaseActivity<PostDetailsPresenter, PostDetailsView>(
 
     override fun showErrorMessage(error: String?, action: ((View) -> Unit)?) {
         if (action != null)
-            longSnackbar(post_details, error ?: "error, something when wrong", "repeat?", action)
+            longSnackbar(post_details_layout, error ?: "error, something when wrong", "repeat?", action)
         else
-            snackbar(post_details, error ?: "error, something when wrong")
+            snackbar(post_details_layout, error ?: "error, something when wrong")
     }
 }

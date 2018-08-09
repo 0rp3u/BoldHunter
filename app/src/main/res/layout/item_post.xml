@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/title"
             android:layout_toEndOf="@id/thumbnail"
+            android:layout_above="@+id/counts"
             android:text="subtitle"
             android:textSize="15sp" />
 
@@ -78,6 +79,8 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="false"
             android:layout_margin="8dp"
+            android:addStatesFromChildren="false"
+            android:animateLayoutChanges="false"
             android:orientation="horizontal">
 
             <ImageView

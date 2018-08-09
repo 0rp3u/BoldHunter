@@ -124,8 +124,8 @@ class UserDetailsActivity : BaseActivity<UserDetailsPresenter, UserDetailsView>(
 
     override fun showErrorMessage(error: String?, action: ((View) -> Unit)?) {
         if (action != null)
-            longSnackbar(post_details, error ?: "error, something when wrong", "repeat?", action )
+            longSnackbar(user_details_layout, error ?: "error, something when wrong", "repeat?", action )
         else
-            snackbar(post_details, error ?: "error, something when wrong")
+            snackbar(user_details_layout, error ?: "error, something when wrong")
     }
 }

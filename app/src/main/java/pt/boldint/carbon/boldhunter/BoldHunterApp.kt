@@ -25,7 +25,7 @@ open class BoldHunterApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        setupLeakCanary()
+        if(BuildConfig.DEBUG) setupLeakCanary()
         instance = this
     }
 
@@ -43,7 +43,6 @@ open class BoldHunterApp : Application() {
         StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder() //
                 .detectAll() //
                 .permitDiskReads()//
-                .permitDiskWrites()//
                 .penaltyLog() //
                 .penaltyDeath() //
                 .build())
