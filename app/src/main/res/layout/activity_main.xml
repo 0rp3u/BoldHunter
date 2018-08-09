@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout android:id="@+id/main_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <include layout="@layout/progress_bar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:paddingLeft="8dp"
+        android:paddingTop="8dp"
+        android:scrollbarStyle="outsideOverlay"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/item_post" >
+    </androidx.recyclerview.widget.RecyclerView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

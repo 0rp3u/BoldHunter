@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/anim_loading"
+        android:state_checked="false"
+        android:bottom="30dp"
+        android:left="30dp"
+        android:right="30dp"
+        android:top="30dp">
+    </item>
+</selector>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BoldHunter</string>
+    <string name="settings">settings</string>
+    <string name="posts">posts</string>
+    <string name="day">today</string>
+    <string name="filter">filter</string>
+</resources>
