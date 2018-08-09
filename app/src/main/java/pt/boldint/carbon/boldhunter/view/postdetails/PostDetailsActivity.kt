@@ -136,8 +136,8 @@ class PostDetailsActivity : BaseActivity<PostDetailsPresenter, PostDetailsView>(
                         .into(thumbnail)
                 user_info.setOnClickListener {_->
                     startActivity(
-                            Intent(this@PostDetailsActivity, PostDetailsActivity::class.java)
-                                    .run { putExtra(EXTRA_POST_ID, it.user.id) }
+                            Intent(this@PostDetailsActivity, UserDetailsActivity::class.java)
+                                    .run { putExtra(UserDetailsActivity.EXTRA_USER_ID, it.user.id) }
                     )
                 }
 

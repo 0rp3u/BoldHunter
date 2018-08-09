@@ -5,14 +5,14 @@ import okhttp3.Interceptor
 import okhttp3.Response
 class ThrottlerInterceptor : Interceptor {
 
-    var throtleTime  = 0
+    private var throtleTime  = 0
     override fun intercept(chain: Interceptor.Chain): Response {
-        if(throtleTime >0) {  //Will BLOCK Okhttp dispatcher's thread
-            Log.d(javaClass.name, "Thread ${Thread.currentThread().name} is going to Block for $throtleTime seconds")
+        if(throtleTime >0) {  //Will Block Okhttp dispatcher's thread
+            Log.d(javaClass.name, "Thread ${Thread.currentThread().name} is going to be Block for $throtleTime seconds")
             Thread.sleep(1000L * throtleTime)
         }
 
-        var request = chain.request()
+        val request = chain.request()
         return chain.proceed(request).also {
             throtleTime= if (it.header("X-Rate-Limit-Remaining")?.toInt() ?: 900 < 5)
                  it.header("X-Rate-Limit-Reset")?.toInt() ?: 0
