@@ -18,7 +18,7 @@ fun ApiUser.toDomain() = User(
         headline ?: "",
         twitter_username,
         try { Uri.parse(website_url) }catch (e:Exception){null},
-        Uri.parse(image_url.original).removeAllQueries()
+        try { Uri.parse(image_url.original).removeAllQueries() } catch (e:Exception){null}
 )
 
 

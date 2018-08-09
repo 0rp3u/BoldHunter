@@ -31,7 +31,7 @@ class UserDetailsActivity : BaseActivity<UserDetailsPresenter, UserDetailsView>(
 
     lateinit var upvotedRecyclerViewAdapter: PostRecyclerViewAdapter
 
-    lateinit var followesRecyclerViewAdapter: UserRecyclerViewAdapter
+    lateinit var followersRecyclerViewAdapter: UserRecyclerViewAdapter
 
     @Inject
     override lateinit var presenter: UserDetailsPresenter
@@ -70,7 +70,7 @@ class UserDetailsActivity : BaseActivity<UserDetailsPresenter, UserDetailsView>(
             )
         }
 
-        followesRecyclerViewAdapter = UserRecyclerViewAdapter {
+        followersRecyclerViewAdapter = UserRecyclerViewAdapter {
             startActivity(
                     Intent(this, UserDetailsActivity::class.java)
                             .run { putExtra(UserDetailsActivity.EXTRA_USER_ID, it.id) }
@@ -87,6 +87,10 @@ class UserDetailsActivity : BaseActivity<UserDetailsPresenter, UserDetailsView>(
             layoutManager = LinearLayoutManager(this@UserDetailsActivity, LinearLayoutManager.HORIZONTAL, false)
         }
 
+        followers_recycler_view.apply {
+            adapter = followersRecyclerViewAdapter
+            layoutManager = LinearLayoutManager(this@UserDetailsActivity, LinearLayoutManager.HORIZONTAL, false)
+        }
     }
 
     override fun showUser(user: UserDetails) {
@@ -103,7 +107,7 @@ class UserDetailsActivity : BaseActivity<UserDetailsPresenter, UserDetailsView>(
 
         upvotedRecyclerViewAdapter.addItems(user.upvoted)
 
-        followesRecyclerViewAdapter.addItems(user.followers)
+        followersRecyclerViewAdapter.addItems(user.followers)
     }
 
     override fun showUserPosts(posts: List<Post>){

@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.progress_bar.*
 import pt.boldint.carbon.boldhunter.R
 import pt.boldint.carbon.boldhunter.data.model.Comment
 import pt.boldint.carbon.boldhunter.data.model.PostDetails
+import pt.boldint.carbon.boldhunter.data.model.User
 import pt.boldint.carbon.boldhunter.extension.app
 import pt.boldint.carbon.boldhunter.extension.longSnackbar
 import pt.boldint.carbon.boldhunter.extension.removeQuery
@@ -49,8 +50,14 @@ class PostDetailsActivity : BaseActivity<PostDetailsPresenter, PostDetailsView>(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_details)
+        initRecyclerViews()
 
-        closeOptionsMenu() //disables options
+        presenter.setPost(this.intent.getIntExtra(EXTRA_POST_ID,1))
+
+
+    }
+
+    private fun initRecyclerViews(){
 
         postRecyclerViewAdapter = PostRecyclerViewAdapter {
             startActivity(
@@ -77,16 +84,15 @@ class PostDetailsActivity : BaseActivity<PostDetailsPresenter, PostDetailsView>(
             layoutManager = LinearLayoutManager(this@PostDetailsActivity, LinearLayoutManager.HORIZONTAL, false)
         }
 
-        presenter.setPost(this.intent.getIntExtra(EXTRA_POST_ID,1))
-
-
     }
 
     override fun showPost(post: PostDetails) {
         description.text = post.description
 
-        this.supportActionBar?.title = post.name
-        this.supportActionBar?.subtitle = post.tagline
+        supportActionBar?.title = post.name
+        supportActionBar?.subtitle = post.tagline
+
+        showAuthor(post.user)
 
         postRecyclerViewAdapter.addItems(post.related_posts)
 
@@ -96,6 +102,27 @@ class PostDetailsActivity : BaseActivity<PostDetailsPresenter, PostDetailsView>(
 
         fillComments(this@PostDetailsActivity.post_comments, post.comments, post.user.id)
 
+
+    }
+
+    private fun showAuthor(user: User){
+        author_info.setOnClickListener {
+            startActivity(
+                    Intent(this, UserDetailsActivity::class.java)
+                            .run { putExtra(UserDetailsActivity.EXTRA_USER_ID, user.id) }
+            )
+        }
+
+        Picasso.get()
+
+                .load(user.user_image_url)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.ic_broken_image_black_24dp)
+                .into(author_image)
+
+        author_name.text = user.name
+        author_username.text = user.username
+        author_description.text = user.headline
 
     }
 
