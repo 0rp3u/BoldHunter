@@ -26,10 +26,10 @@ fun PostList.toDomain()= posts.map { it.toDomain() }
 fun ApiPost.toDomain()= Post(
         id,
         comments_count,
-        day,
+        day ?:"",
         name,
         user.toDomain(),
-        tagline,
+        tagline ?: "",
         votes_count,
         Uri.parse(thumbnail.image_url).removeAllQueries()
 )
@@ -50,7 +50,8 @@ fun ApiMedia.toDomain() = Media(
         media_type,
         original_width,
         original_height,
-        Uri.parse(image_url).removeAllQueries(),
+        if(platform== "youtube") Uri.parse("https://img.youtube.com/vi/$video_id/0.jpg")
+        else Uri.parse(image_url).removeAllQueries(),
         platform,
         video_id
 )

@@ -27,6 +27,7 @@ class PostDetailsPresenterImpl(private val postInteractor: PostInteractor) : Bas
                 view?.hideLoadingIndicator()
 
             }catch (e: Throwable){
+                throw e
                 view?.hideLoadingIndicator()
                 view?.showErrorMessage("something went wrong, ${e.message}") { setPost(id) }
             }

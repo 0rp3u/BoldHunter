@@ -6,6 +6,7 @@ import pt.boldint.carbon.boldhunter.view.base.BaseView
 
 interface MainView : BaseView {
 
+    val viewState: MainActivity.MainActivityViewState
 
     fun showPosts(posts: List<Post>)
 

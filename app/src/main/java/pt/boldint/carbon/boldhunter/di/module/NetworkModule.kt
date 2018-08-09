@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient
 import pt.boldint.carbon.boldhunter.data.api.HunterService
 import pt.boldint.carbon.boldhunter.data.api.interceptor.CacheInterceptor
 import pt.boldint.carbon.boldhunter.data.api.interceptor.OfflineCacheInterceptor
+import pt.boldint.carbon.boldhunter.data.api.interceptor.ThrottlerInterceptor
 
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -29,6 +30,7 @@ class NetworkModule(private val apiEndpointUri: String, private val token: Strin
     @Provides
     @Singleton
     fun provideOkHttpClient(cache: Cache): OkHttpClient = OkHttpClient.Builder()
+            .addNetworkInterceptor(ThrottlerInterceptor())
             .addNetworkInterceptor(HttpAuthInterceptor(token))
             .addNetworkInterceptor(CacheInterceptor(2))
             .addInterceptor(OfflineCacheInterceptor(5))

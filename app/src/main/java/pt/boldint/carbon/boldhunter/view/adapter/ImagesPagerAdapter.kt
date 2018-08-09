@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.ViewGroup
 import android.net.Uri
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.viewpager.widget.PagerAdapter
 import com.squareup.picasso.Picasso
@@ -22,7 +23,7 @@ class ImagesPagerAdapter(val mContext: Context, val imageUrl: List<Uri>) : Pager
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                return ImageView(mContext).apply {
+                return ImageButton(mContext).apply {
                     Picasso.get()
                             .load(imageUrl[position])
                             .placeholder(R.drawable.loading)
@@ -35,4 +36,5 @@ class ImagesPagerAdapter(val mContext: Context, val imageUrl: List<Uri>) : Pager
     override fun destroyItem(container: ViewGroup, position: Int, obj : Any) {
         container.removeView(obj as ImageView)
     }
+
 }
