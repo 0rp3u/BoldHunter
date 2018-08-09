@@ -26,7 +26,6 @@ class MainPresenterImpl(private val postInteractor: PostInteractor) : BasePresen
                 val posts = mutableListOf<Post>()
 
                 for (i in from_page+1 ..to_page+1){
-                    Log.v("main presenter", "fetching page $i")
                    posts.addAll(postInteractor.getPosts(i,per_page, sort_by, order, year, month, day))
                 }
 
@@ -37,7 +36,7 @@ class MainPresenterImpl(private val postInteractor: PostInteractor) : BasePresen
                 view?.hideLoadingIndicator()
                 view?.viewState?.loadingPages = false
             }catch (e: Throwable){
-                Log.e(this@MainPresenterImpl.javaClass.name, e.message)
+                Log.e(TAG, e.localizedMessage)
                 view?.viewState?.loadingPages = false
                 view?.hideLoadingIndicator()
                 view?.showErrorMessage("something went wrong, ${e.message}") {setPosts(from_page, to_page, per_page, sort_by, order, year, month, day) }
@@ -47,5 +46,9 @@ class MainPresenterImpl(private val postInteractor: PostInteractor) : BasePresen
 
     override fun cancelRequest(){
         jobs.cancelChildren()
+    }
+
+    companion object {
+        val TAG = MainPresenterImpl::class.simpleName
     }
 }

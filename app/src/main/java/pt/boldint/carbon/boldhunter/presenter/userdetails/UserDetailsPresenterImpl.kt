@@ -1,15 +1,17 @@
 package pt.boldint.carbon.boldhunter.presenter.userdetails
 
+import android.util.Log
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.cancelChildren
-import pt.boldint.carbon.boldhunter.data.api.HunterService
+import pt.boldint.carbon.boldhunter.interactor.post.PostInteractor
+import pt.boldint.carbon.boldhunter.interactor.user.UserInteractor
 import pt.boldint.carbon.boldhunter.presenter.base.BasePresenterImpl
-import pt.boldint.carbon.boldhunter.view.postdetails.UserDetailsView
+import pt.boldint.carbon.boldhunter.view.userdetails.UserDetailsView
 
 
-class UserDetailsPresenterImpl(private val service: HunterService) : BasePresenterImpl<UserDetailsView>(), UserDetailsPresenter {
+class UserDetailsPresenterImpl(private val userInteractor: UserInteractor) : BasePresenterImpl<UserDetailsView>(), UserDetailsPresenter {
 
     private val jobs = Job()
 
@@ -17,12 +19,18 @@ class UserDetailsPresenterImpl(private val service: HunterService) : BasePresent
         launch (UI, parent =jobs) {
             view?.showLoadingIndicator()
             try {
-                val post = service.getUserDetails(id).await()
+                val user = userInteractor.getUserDetails(id)
 
-                view?.showUser(post)
+                view?.showUser(user)
+
+                val userPosts = userInteractor.getUserPosts(id)
+
+                view?.showUserPosts(userPosts)
+
                 view?.hideLoadingIndicator()
 
             }catch (e: Throwable){
+                Log.e(TAG, e.stackTrace?.contentDeepToString())
                 view?.hideLoadingIndicator()
                 view?.showErrorMessage("something went wrong, ${e.message}") { setUser(id) }
             }
@@ -31,5 +39,9 @@ class UserDetailsPresenterImpl(private val service: HunterService) : BasePresent
 
     override fun cancelRequest(){
         jobs.cancelChildren()
+    }
+
+    companion object {
+        val TAG = UserDetailsPresenterImpl::class.simpleName
     }
 }

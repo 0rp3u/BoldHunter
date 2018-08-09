@@ -1,5 +1,6 @@
 package pt.boldint.carbon.boldhunter.presenter.postdetails
 
+import android.util.Log
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.launch
 import kotlinx.coroutines.experimental.android.UI
@@ -8,6 +9,7 @@ import org.jetbrains.anko.coroutines.experimental.asReference
 import pt.boldint.carbon.boldhunter.data.api.HunterService
 import pt.boldint.carbon.boldhunter.interactor.post.PostInteractor
 import pt.boldint.carbon.boldhunter.presenter.base.BasePresenterImpl
+import pt.boldint.carbon.boldhunter.presenter.userdetails.UserDetailsPresenterImpl
 import pt.boldint.carbon.boldhunter.view.postdetails.PostDetailsView
 
 
@@ -27,7 +29,7 @@ class PostDetailsPresenterImpl(private val postInteractor: PostInteractor) : Bas
                 view?.hideLoadingIndicator()
 
             }catch (e: Throwable){
-                throw e
+                Log.e(TAG, e.localizedMessage)
                 view?.hideLoadingIndicator()
                 view?.showErrorMessage("something went wrong, ${e.message}") { setPost(id) }
             }
@@ -36,5 +38,9 @@ class PostDetailsPresenterImpl(private val postInteractor: PostInteractor) : Bas
 
     override fun cancelRequest(){
         jobs.cancelChildren()
+    }
+
+    companion object {
+        val TAG = PostDetailsPresenterImpl::class.simpleName
     }
 }

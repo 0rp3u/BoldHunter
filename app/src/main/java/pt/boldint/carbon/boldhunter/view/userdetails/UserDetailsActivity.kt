@@ -5,18 +5,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_user_details.*
 import kotlinx.android.synthetic.main.progress_bar.*
 import pt.boldint.carbon.boldhunter.R
-import pt.boldint.carbon.boldhunter.data.api.inputmodel.User
+import pt.boldint.carbon.boldhunter.data.model.Post
+import pt.boldint.carbon.boldhunter.data.model.UserDetails
 import pt.boldint.carbon.boldhunter.extension.app
 import pt.boldint.carbon.boldhunter.extension.longSnackbar
 import pt.boldint.carbon.boldhunter.extension.snackbar
 import pt.boldint.carbon.boldhunter.presenter.userdetails.UserDetailsPresenter
 import pt.boldint.carbon.boldhunter.view.adapter.PostRecyclerViewAdapter
+import pt.boldint.carbon.boldhunter.view.adapter.UserRecyclerViewAdapter
 import pt.boldint.carbon.boldhunter.view.base.BaseActivity
 import pt.boldint.carbon.boldhunter.view.postdetails.PostDetailsActivity
-import pt.boldint.carbon.boldhunter.view.postdetails.UserDetailsView
 import javax.inject.Inject
 
 class UserDetailsActivity : BaseActivity<UserDetailsPresenter, UserDetailsView>(), UserDetailsView {
@@ -25,7 +27,11 @@ class UserDetailsActivity : BaseActivity<UserDetailsPresenter, UserDetailsView>(
         const val EXTRA_USER_ID = "EXTRA_USER_ID"
     }
 
-    lateinit var postRecyclerViewAdapter: PostRecyclerViewAdapter
+    lateinit var submitedPostsRecyclerViewAdapter: PostRecyclerViewAdapter
+
+    lateinit var upvotedRecyclerViewAdapter: PostRecyclerViewAdapter
+
+    lateinit var followesRecyclerViewAdapter: UserRecyclerViewAdapter
 
     @Inject
     override lateinit var presenter: UserDetailsPresenter
@@ -39,31 +45,69 @@ class UserDetailsActivity : BaseActivity<UserDetailsPresenter, UserDetailsView>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_post_details)
+        setContentView(R.layout.activity_user_details)
 
-        postRecyclerViewAdapter = PostRecyclerViewAdapter {
+        initRecyclerViews()
+
+        val userId = this.intent.getIntExtra(EXTRA_USER_ID,1)
+
+        presenter.setUser(userId)
+
+    }
+
+    private fun initRecyclerViews(){
+        submitedPostsRecyclerViewAdapter = PostRecyclerViewAdapter {
             startActivity(
                     Intent(this, PostDetailsActivity::class.java)
                             .run { putExtra(PostDetailsActivity.EXTRA_POST_ID, it.id) }
             )
         }
 
+        upvotedRecyclerViewAdapter = PostRecyclerViewAdapter {
+            startActivity(
+                    Intent(this, PostDetailsActivity::class.java)
+                            .run { putExtra(PostDetailsActivity.EXTRA_POST_ID, it.id) }
+            )
+        }
+
+        followesRecyclerViewAdapter = UserRecyclerViewAdapter {
+            startActivity(
+                    Intent(this, UserDetailsActivity::class.java)
+                            .run { putExtra(UserDetailsActivity.EXTRA_USER_ID, it.id) }
+            )
+        }
 
         posts_recycler_view.apply {
-            adapter = postRecyclerViewAdapter
+            adapter = submitedPostsRecyclerViewAdapter
             layoutManager = LinearLayoutManager(this@UserDetailsActivity, LinearLayoutManager.HORIZONTAL, false)
         }
 
-
-        presenter.setUser(this.intent.getIntExtra(EXTRA_USER_ID,1))
+        upvoted_recycler_view.apply {
+            adapter = submitedPostsRecyclerViewAdapter
+            layoutManager = LinearLayoutManager(this@UserDetailsActivity, LinearLayoutManager.HORIZONTAL, false)
+        }
 
     }
 
-    override fun showUser(user: User) {
+    override fun showUser(user: UserDetails) {
         title = "${user.name}'s info"
+        supportActionBar?.subtitle = user.username
 
-       // postRecyclerViewAdapter.addItems()
+        Picasso.get()
+                .load(user.user_image_url)
+                .placeholder(R.drawable.loading)
+                .error(R.drawable.ic_account_box_black_24dp)
+                .into(user_image)
 
+        about.text = user.headline
+
+        upvotedRecyclerViewAdapter.addItems(user.upvoted)
+
+        followesRecyclerViewAdapter.addItems(user.followers)
+    }
+
+    override fun showUserPosts(posts: List<Post>){
+        submitedPostsRecyclerViewAdapter.addItems(posts)
     }
 
     override fun showLoadingIndicator() {

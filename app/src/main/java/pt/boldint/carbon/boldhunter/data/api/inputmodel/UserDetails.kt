@@ -8,6 +8,8 @@ data class UserDetails(
         val headline: String?,
         val twitter_username: String?,
         val website_url: String,
-        val image_url:ImageUrl
+        val image_url:ImageUrl,
+        val votes: List<PostVote>,
+        val followers: List<User>
 
 )

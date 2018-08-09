@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import pt.boldint.carbon.boldhunter.data.api.HunterService
 import pt.boldint.carbon.boldhunter.interactor.post.PostInteractor
+import pt.boldint.carbon.boldhunter.interactor.user.UserInteractor
 import pt.boldint.carbon.boldhunter.presenter.main.MainPresenter
 import pt.boldint.carbon.boldhunter.presenter.main.MainPresenterImpl
 import pt.boldint.carbon.boldhunter.presenter.postdetails.PostDetailsPresenter
@@ -23,7 +24,7 @@ class PresentersModule {
             = PostDetailsPresenterImpl(postInteractor)
 
     @Provides
-    fun provideUserDetailsPresenter(service: HunterService): UserDetailsPresenter
-            = UserDetailsPresenterImpl(service)
+    fun provideUserDetailsPresenter(userInteractor: UserInteractor): UserDetailsPresenter
+            = UserDetailsPresenterImpl(userInteractor)
 
 }

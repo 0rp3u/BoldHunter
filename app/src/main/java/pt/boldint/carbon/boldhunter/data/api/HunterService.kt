@@ -21,7 +21,10 @@ interface HunterService {
     fun getPostDetails(@Path("id") id: Int): Deferred<PostDetailsResponse>
 
     @GET("users/{id}")
-    fun getUserDetails(@Path("id") id: Int): Deferred<User>
+    fun getUserDetails(@Path("id") id: Int): Deferred<UserResponse>
+
+    @GET("users/{id}/posts")
+    fun getUserPosts(@Path("id") id: Int): Deferred<PostList>
 
     @GET("post/{id}/comments")
     fun getPostComments(@Path("id") id: Int): Deferred<CommentList>

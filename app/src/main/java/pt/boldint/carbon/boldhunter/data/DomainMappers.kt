@@ -29,7 +29,9 @@ fun ApiUserDetails.toDomain() = UserDetails(
         headline ?: "",
         twitter_username,
         try { Uri.parse(website_url) }catch (e:Exception){null},
-        Uri.parse(image_url.original).removeAllQueries()
+        Uri.parse(image_url.original).removeAllQueries(),
+        votes.map { it.post.toDomain() },
+        followers.map { it.toDomain() }
 )
 
 

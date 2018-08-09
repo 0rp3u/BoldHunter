@@ -5,5 +5,8 @@ import pt.boldint.carbon.boldhunter.data.toDomain
 
 class UserInteractorImpl(private val service: HunterService) : UserInteractor {
 
-    override suspend fun getUserDetails(id:Int) = service.getUserDetails(id).await().toDomain()
+    override suspend fun getUserDetails(id:Int) = service.getUserDetails(id).await().user.toDomain()
+
+    override suspend fun getUserPosts(id:Int) = service.getUserPosts(id).await().toDomain()
+
 }

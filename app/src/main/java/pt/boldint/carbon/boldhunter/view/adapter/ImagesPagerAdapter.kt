@@ -23,7 +23,7 @@ class ImagesPagerAdapter(val mContext: Context, val imageUrl: List<Uri>) : Pager
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-                return ImageButton(mContext).apply {
+                return ImageView(mContext).apply {
                     Picasso.get()
                             .load(imageUrl[position])
                             .placeholder(R.drawable.loading)
