@@ -34,7 +34,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         const val VIEW_STATE_ID = "VIEW_STATE_ID"
     }
     @Parcelize
-    data class MainActivityViewState( //TODO make parcelable
+    data class MainActivityViewState(
             var loadingPages: Boolean = false,
             var currentPage: Int = 0,
             var listPosition :Int = 0,
@@ -113,7 +113,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             val linearLayoutManager = LinearLayoutManager(this@MainActivity)
             layoutManager = linearLayoutManager
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener() { //TODO this might leak, save refrence so we can remove it onDestroy
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     if (dy > 0 && !viewState.loadingPages)
@@ -125,19 +125,16 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             })
         }
 
-        //recycler_view.scrollToPosition(viewState.listPosition) //TODO FIX, Has to be done after
+        //recycler_view.scrollToPosition(viewState.listPosition) //TODO FIX, Has to be done after fetching pages
     }
 
     override fun showPosts(posts: List<Post>) {
         Log.v(localClassName, "showing ${posts.size} posts")
-        viewState.loadingPages = false
         showTitle()
         postRecyclerViewAdapter.addItems(posts)
     }
 
     private fun fetchPosts(keepCurrent: Boolean = false) {
-        viewState.loadingPages = true
-
         if(!keepCurrent) postRecyclerViewAdapter.clear()
 
         val loadedPages = postRecyclerViewAdapter.itemCount / 10
@@ -168,7 +165,6 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             OrderBy.asc -> "ascending"
 
         }
-
         val sortedText = when(viewState.sort_by){
             SortBy.created_at -> "creation date"
             SortBy.id -> "id"

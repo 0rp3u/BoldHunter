@@ -4,6 +4,6 @@ import pt.boldint.carbon.boldhunter.data.model.User
 
 interface UserInteractor{
 
-    suspend fun getUser(id:Int) : User
+    suspend fun getUserDetails(id:Int) : User
 
 }

@@ -5,6 +5,7 @@ import pt.boldint.carbon.boldhunter.data.api.inputmodel.PostDetails as ApiPostDe
 import pt.boldint.carbon.boldhunter.data.api.inputmodel.PostList
 import pt.boldint.carbon.boldhunter.data.api.inputmodel.Post as ApiPost
 import pt.boldint.carbon.boldhunter.data.api.inputmodel.User as ApiUser
+import pt.boldint.carbon.boldhunter.data.api.inputmodel.UserDetails as ApiUserDetails
 import pt.boldint.carbon.boldhunter.data.api.inputmodel.Media as ApiMedia
 import pt.boldint.carbon.boldhunter.data.model.*
 import pt.boldint.carbon.boldhunter.extension.removeAllQueries
@@ -19,6 +20,18 @@ fun ApiUser.toDomain() = User(
         try { Uri.parse(website_url) }catch (e:Exception){null},
         Uri.parse(image_url.original).removeAllQueries()
 )
+
+
+fun ApiUserDetails.toDomain() = UserDetails(
+        id,
+        name,
+        username,
+        headline ?: "",
+        twitter_username,
+        try { Uri.parse(website_url) }catch (e:Exception){null},
+        Uri.parse(image_url.original).removeAllQueries()
+)
+
 
 
 fun PostList.toDomain()= posts.map { it.toDomain() }
@@ -56,7 +69,7 @@ fun ApiMedia.toDomain() = Media(
         video_id
 )
 
-fun ApiPostDetails.toDomain() = post.run { PostDetails(
+fun ApiPostDetails.toDomain() = PostDetails(
        id,
         comments_count,
         day ?: "",
@@ -71,6 +84,4 @@ fun ApiPostDetails.toDomain() = post.run { PostDetails(
         related_posts.map { it.toDomain() },
         comments.map { it.toDomain() }
     )
-
-}
 

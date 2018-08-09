@@ -20,6 +20,7 @@ class MainPresenterImpl(private val postInteractor: PostInteractor) : BasePresen
     override fun setPosts(from_page: Int, to_page: Int, per_page: Int, sort_by: SortBy, order: OrderBy, year: Int?, month: Int?, day: Int?) {
         launch (UI, parent =jobs) {
             view?.showLoadingIndicator()
+            view?.viewState?.loadingPages = true
             try {
 
                 val posts = mutableListOf<Post>()
@@ -34,9 +35,10 @@ class MainPresenterImpl(private val postInteractor: PostInteractor) : BasePresen
 
                 view?.showPosts(posts)
                 view?.hideLoadingIndicator()
-
+                view?.viewState?.loadingPages = false
             }catch (e: Throwable){
                 Log.e(this@MainPresenterImpl.javaClass.name, e.message)
+                view?.viewState?.loadingPages = false
                 view?.hideLoadingIndicator()
                 view?.showErrorMessage("something went wrong, ${e.message}") {setPosts(from_page, to_page, per_page, sort_by, order, year, month, day) }
             }
