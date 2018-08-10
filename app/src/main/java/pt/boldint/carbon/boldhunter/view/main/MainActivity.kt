@@ -39,7 +39,6 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             var currentPage: Int = 0,
             var itemPerPage :Int= 50,
             var listPosition :Int = 0,
-            var showAll: Boolean = false,
             var sort_by : SortBy = SortBy.created_at,
             var order_by : OrderBy = OrderBy.desc,
             var allPosts :Boolean = false,
@@ -154,13 +153,13 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
 
     private fun showTitle(){
         val dateparsed = when{
-            viewState.allPosts -> "All"
-            viewState.date.isToday() -> "Today"
-            viewState.date.isYesterday() -> "yesterday"
-            else -> getDate(viewState.date)
+            viewState.allPosts -> "All posts"
+            viewState.date.isToday() -> "Today's posts"
+            viewState.date.isYesterday() -> "yesterday's posts"
+            else -> "${getDate(viewState.date)}'s posts"
         }
 
-        title = "$dateparsed's posts"
+        title = dateparsed
 
         val ordertedText = when(viewState.order_by){
             OrderBy.desc -> "descending"
@@ -179,17 +178,17 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     }
 
     private fun showDatePickerDialog() {
-
         var date = viewState.date
-        var anyDate = false
+        var anyDate = viewState.allPosts
 
         val dialogView = layoutInflater.inflate(R.layout.dialog_date_picker, null).apply {
-            calendarView.maxDate = Calendar.getInstance().timeInMillis //TDAY
+            calendarView.maxDate = Calendar.getInstance().timeInMillis
             calendarView.setDate(viewState.date.timeInMillis, true, true)
 
             calendarView.setOnDateChangeListener { _, year, month, day ->
                 date = Calendar.getInstance().apply {  set(year,month,day)}
             }
+            disableDate.isChecked = anyDate
             disableDate.setOnCheckedChangeListener { _, isSwiwched ->
                 calendarView.isEnabled = !isSwiwched
                 anyDate = isSwiwched
@@ -201,7 +200,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
                 .setTitle("Date options")
                 .setView(dialogView)
                 .setPositiveButton("apply") { dialogInterface, i ->
-                    viewState.showAll = anyDate
+                    viewState.allPosts = anyDate
                     if(!anyDate) viewState.date = date
                     fetchPosts(); dialogInterface.dismiss()
                 }

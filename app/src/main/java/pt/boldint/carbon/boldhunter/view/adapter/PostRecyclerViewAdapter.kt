@@ -14,7 +14,7 @@ import pt.boldint.carbon.boldhunter.view.userdetails.UserDetailsActivity
 
 class PostRecyclerViewAdapter(val listener: (Post) -> Unit) : RecyclerView.Adapter<PostRecyclerViewAdapter.ViewHolder>() {
 
-    private val historyList = mutableListOf<Post>()
+    private var historyList = mutableListOf<Post>()
 
     fun addItems(items: List<Post>){
         historyList.addAll(items)
@@ -22,7 +22,7 @@ class PostRecyclerViewAdapter(val listener: (Post) -> Unit) : RecyclerView.Adapt
     }
 
     fun clear(){
-        historyList.removeAll { true }
+        historyList = mutableListOf()
         notifyDataSetChanged()
     }
 

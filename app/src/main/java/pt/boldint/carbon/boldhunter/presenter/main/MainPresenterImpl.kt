@@ -35,6 +35,7 @@ class MainPresenterImpl(private val postInteractor: PostInteractor) : BasePresen
                 view?.showPosts(posts)
                 view?.hideLoadingIndicator()
                 view?.viewState?.loadingPages = false
+
             }catch (e: Throwable){
                 Log.e(TAG, e.localizedMessage)
                 view?.viewState?.loadingPages = false
