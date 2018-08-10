@@ -190,7 +190,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             }
             disableDate.isChecked = anyDate
             disableDate.setOnCheckedChangeListener { _, isSwiwched ->
-                calendarView.isEnabled = !isSwiwched
+                calendarView.visibility = if (isSwiwched) View.GONE else View.VISIBLE
                 anyDate = isSwiwched
             }
         }
