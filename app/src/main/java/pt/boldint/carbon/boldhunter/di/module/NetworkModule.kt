@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import okhttp3.Cache
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import pt.boldint.carbon.boldhunter.data.api.HunterService
 import pt.boldint.carbon.boldhunter.data.api.interceptor.CacheInterceptor
 import pt.boldint.carbon.boldhunter.data.api.interceptor.OfflineCacheInterceptor
@@ -34,6 +35,7 @@ class NetworkModule(private val apiEndpointUri: String, private val token: Strin
             .addNetworkInterceptor(HttpAuthInterceptor(token))
             .addNetworkInterceptor(CacheInterceptor(2))
             .addInterceptor(OfflineCacheInterceptor(5))
+            .addInterceptor( HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC})
             .cache(cache)
             .build()
 

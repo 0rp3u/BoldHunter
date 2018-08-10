@@ -8,10 +8,10 @@ interface HunterService {
 
     @GET("posts/all")
     fun getPosts(
-            @Query("page") page:Int = 1,
-            @Query("per_page") per_page:Int = 10,
-            @Query("sort_by") sort_by:String = "created_at",
-            @Query("order") order: String = "desc",
+            @Query("page") page:Int,
+            @Query("per_page") per_page:Int,
+            @Query("sort_by") sort_by:String,
+            @Query("order") order: String,
             @Query("year") year:Int?,
             @Query("month") month:Int?,
             @Query("day") day:Int?

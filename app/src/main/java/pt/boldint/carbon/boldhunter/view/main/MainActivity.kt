@@ -36,7 +36,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
     @Parcelize
     data class MainActivityViewState(
             var loadingPages: Boolean = false,
-            var currentPage: Int = 0,
+            var currentPage: Int = 1,
             var itemPerPage :Int= 50,
             var listPosition :Int = 0,
             var sort_by : SortBy = SortBy.created_at,
@@ -141,7 +141,7 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
         val loadedPages = postRecyclerViewAdapter.itemCount / viewState.itemPerPage
         presenter.setPosts(
                 loadedPages,
-                viewState.currentPage++,
+                viewState.currentPage,
                 viewState.itemPerPage,
                 order = viewState.order_by,
                 sort_by = viewState.sort_by,
@@ -188,10 +188,12 @@ class MainActivity : BaseActivity<MainPresenter, MainView>(), MainView {
             calendarView.setOnDateChangeListener { _, year, month, day ->
                 date = Calendar.getInstance().apply {  set(year,month,day)}
             }
+            calendarView.visibility = if (anyDate) View.GONE else View.VISIBLE
+
             disableDate.isChecked = anyDate
             disableDate.setOnCheckedChangeListener { _, isSwiwched ->
-                calendarView.visibility = if (isSwiwched) View.GONE else View.VISIBLE
                 anyDate = isSwiwched
+                calendarView.visibility = if (anyDate) View.GONE else View.VISIBLE
             }
         }
 

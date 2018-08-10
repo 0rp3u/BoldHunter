@@ -25,12 +25,12 @@ class MainPresenterImpl(private val postInteractor: PostInteractor) : BasePresen
 
                 val posts = mutableListOf<Post>()
 
-                for (i in from_page+1 ..to_page+1){
+                for (i in from_page+1 ..to_page){
                    posts.addAll(postInteractor.getPosts(i,per_page, sort_by, order, year, month, day))
                 }
 
 
-                //view?.viewState?.currentPage?.inc()
+                view?.viewState?.currentPage = from_page+1
 
                 view?.showPosts(posts)
                 view?.hideLoadingIndicator()

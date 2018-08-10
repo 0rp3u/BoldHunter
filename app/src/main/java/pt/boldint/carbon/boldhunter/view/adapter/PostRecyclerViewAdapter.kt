@@ -65,6 +65,7 @@ class PostRecyclerViewAdapter(val listener: (Post) -> Unit) : RecyclerView.Adapt
             }
 
             itemView.title.text = post.name
+            itemView.date.text = post.day
             itemView.subtitle.text = post.tagline
             itemView.upvote_number.text = "${post.votes_count}"
             itemView.comment_number.text = "${post.comments_count}"
