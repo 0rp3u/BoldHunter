@@ -49,10 +49,7 @@ class UserDetailsActivity : BaseActivity<UserDetailsPresenter, UserDetailsView>(
 
         initRecyclerViews()
 
-        val userId = this.intent.getIntExtra(EXTRA_USER_ID,1)
-
-        presenter.setUser(userId)
-
+        presenter.setUser(intent.getIntExtra(EXTRA_USER_ID,1))
     }
 
     private fun initRecyclerViews(){

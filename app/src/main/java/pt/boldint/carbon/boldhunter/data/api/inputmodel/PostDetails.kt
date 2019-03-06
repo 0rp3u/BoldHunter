@@ -8,7 +8,7 @@ data class PostDetails(
         val name: String,
         val tagline: String,
         val votes_count: Int,
-        val description: String,
+        val description: String?,
         val thumbnail: Thumbnail,
         val media: List<Media>,
         val votes: List<Vote>,

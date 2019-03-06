@@ -79,7 +79,7 @@ fun ApiPostDetails.toDomain() = PostDetails(
         name,
         tagline,
         votes_count,
-        description,
+        description?: "",
         Uri.parse(thumbnail.image_url).removeAllQueries(),
         media.map { it.toDomain() },
         votes.map { it.user.toDomain() },

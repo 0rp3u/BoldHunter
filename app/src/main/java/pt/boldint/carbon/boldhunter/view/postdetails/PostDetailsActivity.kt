@@ -30,7 +30,7 @@ import javax.inject.Inject
 class PostDetailsActivity : BaseActivity<PostDetailsPresenter, PostDetailsView>(), PostDetailsView {
 
     companion object {
-        val EXTRA_POST_ID = "EXTRA_USER_ID"
+        val EXTRA_POST_ID = "EXTRA_POST_ID"
     }
 
     lateinit var postRecyclerViewAdapter: PostRecyclerViewAdapter
@@ -51,11 +51,9 @@ class PostDetailsActivity : BaseActivity<PostDetailsPresenter, PostDetailsView>(
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post_details)
         initRecyclerViews()
-
-        presenter.setPost(this.intent.getIntExtra(EXTRA_POST_ID,1))
-
-
+        presenter.setPost(intent.getIntExtra(EXTRA_POST_ID,1))
     }
+
 
     private fun initRecyclerViews(){
 
